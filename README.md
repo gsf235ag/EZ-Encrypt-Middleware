@@ -77,7 +77,9 @@ AES_KEY=4c6f8e5f9467dc71
 
 ```bash
 # 编译
-go build -o proxy-server
+GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o proxy-server // arm64
+
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o proxy-server // amd64
 
 # 运行
 ./proxy-server
