@@ -1,12 +1,12 @@
 package main
 
 import (
+	"EZ-Encrypt-Middleware/config"
+	"EZ-Encrypt-Middleware/proxy"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"testjiami/config"
-	"testjiami/proxy"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -55,7 +55,6 @@ func main() {
 		}
 	}
 
-	// Add request logging middleware if enabled
 	if config.AppConfig.EnableLogging == "true" {
 		r.Use(func(c *gin.Context) {
 			log.Printf("请求: %s %s", c.Request.Method, c.Request.URL.Path)
@@ -90,25 +89,19 @@ func main() {
 	r.Run(":" + port)
 }
 
-// handlePaymentNotify handles payment notification paths directly without encryption
 func handlePaymentNotify(c *gin.Context) {
-	// Get backend URL from config
 	backendURL := config.AppConfig.BackendAPIURL
 
-	// Create target URL
 	targetURL := backendURL + c.Request.URL.Path
 
-	// Parse the target URL
 	target, err := url.Parse(targetURL)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "无效的目标URL"})
 		return
 	}
 
-	// Create reverse proxy
 	proxy := httputil.NewSingleHostReverseProxy(target)
 
-	// Director function to modify the request
 	proxy.Director = func(req *http.Request) {
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
@@ -117,6 +110,5 @@ func handlePaymentNotify(c *gin.Context) {
 		req.Host = target.Host
 	}
 
-	// Serve the request
 	proxy.ServeHTTP(c.Writer, c.Request)
 }
