@@ -37,6 +37,7 @@
 # 1. 基础服务器设置
 PORT=3000                                  # 服务器监听端口
 BACKEND_API_URL=https://skhsn6q4pnv95.ezdemo.xyz # 后端真实 API 根地址不带 /api/v1（无尾斜杠）
+PATH_PREFIX=/ez/ez                               # 路径前缀，为空则处理所有路径，否则只处理匹配前缀的路径
 
 # 2. CORS / 安全设置
 CORS_ORIGIN=*                              # 允许的 CORS 源；* 表示全部
@@ -59,7 +60,8 @@ AES_KEY=4c6f8e5f9467dc71
 
 1. **PORT**：服务器监听端口，默认3000
 2. **BACKEND_API_URL**：后端API的基础URL，不包含/api/v1部分
-3. **CORS_ORIGIN**：
+3. **PATH_PREFIX**：路径前缀，为空则处理所有路径，否则只处理匹配前缀的路径
+4. **CORS_ORIGIN**：
    - `*`：允许所有来源
    - 具体域名：只允许指定域名
 4. **ALLOWED_ORIGINS**：

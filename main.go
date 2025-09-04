@@ -25,14 +25,42 @@ func main() {
 	// Create Gin engine
 	r := gin.Default()
 
-	r.NoRoute(func(c *gin.Context) {
-		if config.AppConfig.IsPaymentNotifyPath(c.Request.URL.Path) {
-			handlePaymentNotify(c)
-			return
-		}
+	// Check if path prefix is configured
+	pathPrefix := config.AppConfig.PathPrefix
 
-		proxy.ProxyHandler(c)
-	})
+	if pathPrefix != "" {
+		// If path prefix is configured, only handle paths that match the prefix
+		r.NoRoute(func(c *gin.Context) {
+			requestPath := c.Request.URL.Path
+
+			// Check if request path starts with the configured prefix
+			if len(requestPath) >= len(pathPrefix) && requestPath[:len(pathPrefix)] == pathPrefix {
+				// Remove prefix from path for further processing
+				c.Request.URL.Path = requestPath[len(pathPrefix):]
+
+				if config.AppConfig.IsPaymentNotifyPath(c.Request.URL.Path) {
+					handlePaymentNotify(c)
+					return
+				}
+
+				proxy.ProxyHandler(c)
+				return
+			}
+
+			// If path doesn't match prefix, return 404
+			c.JSON(http.StatusNotFound, gin.H{"error": "路径未找到"})
+		})
+	} else {
+		// If no prefix is configured, keep the original behavior
+		r.NoRoute(func(c *gin.Context) {
+			if config.AppConfig.IsPaymentNotifyPath(c.Request.URL.Path) {
+				handlePaymentNotify(c)
+				return
+			}
+
+			proxy.ProxyHandler(c)
+		})
+	}
 
 	corsConfig := cors.Config{}
 
@@ -85,6 +113,9 @@ func main() {
 	log.Printf("日志记录: %s", config.AppConfig.EnableLogging)
 	if len(config.AppConfig.GetAllowedPaymentNotifyPaths()) > 0 {
 		log.Printf("支付回调路径: %v", config.AppConfig.GetAllowedPaymentNotifyPaths())
+	}
+	if config.AppConfig.PathPrefix != "" {
+		log.Printf("路径前缀: %s", config.AppConfig.PathPrefix)
 	}
 	r.Run(":" + port)
 }
