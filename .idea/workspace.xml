@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12ef7a9c-c6fb-42de-ab09-ed819a95d845" name="更改" comment="feat: 中间件新增可选配置匹配路径前缀">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-    </list>
+    <list default="true" id="12ef7a9c-c6fb-42de-ab09-ed819a95d845" name="更改" comment="feat: 中间件新增可选配置匹配路径前缀" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -109,7 +103,8 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="chore: initial project setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: initial project setup" />
+    <MESSAGE value="feat: 中间件新增可选配置匹配路径前缀" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 中间件新增可选配置匹配路径前缀" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

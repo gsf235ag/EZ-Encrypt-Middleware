@@ -2,6 +2,8 @@
 
 一个基于Go语言开发的API代理服务器，支持路径加密解密、CORS跨域处理、支付回调免验证等功能。
 
+部署教程 🤌 [查看](https://github.com/codeman857/EZ-Encrypt-Middleware/wiki/aapanel-%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B)
+
 ## 功能特性
 
 1. **路径加密解密**：对请求路径进行AES解密后再转发到后端API
