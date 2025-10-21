@@ -146,3 +146,99 @@ go run main.go
 2. 根据实际需求配置`REQUEST_TIMEOUT`
 3. 合理配置CORS策略，避免安全风险
 4. 定期更新`AES_KEY`提高安全性
+
+# proxy-server 安装
+
+## 手动安装
+
+### 1.去 Release 下载编译好的 proxy-server 对应系统二进制文件
+
+### 2.把 proxy-server 放到 /etc/proxy-server 文件夹
+
+### 3.在/etc/proxy-server 文件夹创建 .env 配置文件：
+
+```
+文件名：.env
+
+配置内容：
+# 1. 基础服务器设置
+PORT=32541                                  # 中间件监听端口
+BACKEND_API_URL=https://xxxx.com       # 后端真实 API 根地址 (不带 /api/v1，无尾斜杠)
+PATH_PREFIX=/ez/ez                         # 路径前缀；为空 "" 则处理所有请求
+
+# 2. CORS / 安全设置
+CORS_ORIGIN=*                              # 允许的 CORS 源
+ALLOWED_ORIGINS=*                          # 请求来源白名单
+REQUEST_TIMEOUT=30000                      # 请求超时(ms)
+ENABLE_LOGGING=false                       # 是否输出请求日志
+DEBUG_MODE=false                           # 是否输出调试日志
+
+# 3. 支付回调免验证路径 (可选)
+ALLOWED_PAYMENT_NOTIFY_PATHS=
+
+# 4. AES 加解密配置
+AES_KEY=4c6f8e5f9467dc71                   # 必须与前端一致 (16 位 16进制字符串)
+```
+
+
+
+### 4.在 /etc/systemd/system 文件夹创建 proxy-server.service
+
+```
+[Unit]
+Description=Custom Proxy Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/etc/proxy-server/proxy-server
+Restart=on-failure
+User=root
+WorkingDirectory=/etc/proxy-server
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+### 5.设置权限
+
+```
+chmod +x /etc/proxy-server/proxy-server
+```
+
+### 6.重新加载systemctl daemon
+
+```
+systemctl daemon-reload
+```
+
+### 7.常用命令
+
+```
+设置开机自启动
+systemctl enable proxy-server.service
+
+关闭后端
+systemctl stop proxy-server.service
+
+禁用服务开机启动
+systemctl disable proxy-server.service
+
+后端状态
+systemctl status proxy-server.service
+
+启动后端
+systemctl start proxy-server.service
+
+关闭后端
+systemctl stop proxy-server.service
+
+重启后端
+systemctl restart proxy-server.service
+
+服务日志 (后端崩溃等)
+journalctl -f -u proxy-server.service
+```
+
+
